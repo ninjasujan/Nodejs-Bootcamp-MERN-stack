@@ -39,7 +39,9 @@ const userSchema = new Schema({
         type: Array,
         default: []
     }
-});
+}, {timestamps: true});
+
+// mongoose virtuals helps to add a virtual field without affecting our database fields
 
 userSchema.virtual('password')
     .set(function(password) {
@@ -51,6 +53,7 @@ userSchema.virtual('password')
         return this._password;
     })
 
+// mongoose methods 
 userSchema.method = {
 
     authenticate: function(plain) {
