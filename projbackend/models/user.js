@@ -54,13 +54,13 @@ userSchema.virtual('password')
     })
 
 // mongoose methods 
-userSchema.method = {
+userSchema.methods = {
 
     authenticate: function(plain) {
         return this.securePassword(plain) === this.encry_password;
     },
 
-    securePassword: (plain) => {
+    securePassword: function (plain) {
         if(!plain) return "";
         try {
             return crypto.createHmac('sha256', this.salt)
