@@ -32,7 +32,7 @@ router.post('/signin', [
 router.post('/signout', authController.signout);
 
 router.post('/protected', authController.isSignedIn, (req, res, next) => {
-    res.send('protected routes.!');
+    res.json(req.auth);
 })
 
 module.exports = router;
