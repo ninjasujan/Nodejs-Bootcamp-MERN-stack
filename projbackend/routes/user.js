@@ -17,4 +17,10 @@ router.put('/user/:userId',
     userController.updateUser
 );
 
+router.get('/orders/user/:userId', 
+    authController.isSignedIn,
+    authController.isAuthenticated,
+    userController.userPurchaseList
+);
+
 module.exports = router;

@@ -1,5 +1,6 @@
 
 const User = require('../models/user');
+const Order = require('../models/order');
 
 exports.getUserById = (req, res, next, id) => {
     User.findById(id)
@@ -61,6 +62,52 @@ exports.updateUser = (req, res, next) => {
             res.status(500).json({
                 error: 'Internal server error in updating user.!'
             });
-        })
+        });
     
+};
+
+exports.userPurchaseList = (req, res, next) => {
+    Order.find({user: req.profile._id})
+    .populate("user", "_id name")
+    .then(orders => {
+        return res.json(orders);
+    })
+    .catch(err => {
+        res.status(404).json({
+            error: "No purchase list found.!"
+        });
+    })
+};
+
+exports.pushOrderInPurchaseList = (req, res, next) => {
+    let purchases = [];
+    req.body.order.product.forEach(product => {
+        purchases.push({
+            _id: product._id,
+            name: product.name,
+            description: product.description,
+            category: product.category,
+            quantity: product.quantity,
+            amount: req.body.order.amount,
+            transactionId: req.body.order.transactionId
+        });
+    });
+    //storet this in DB
+    User.findOneAndUpdate(
+        {_id: req.profile._id},
+        {$push: {purchases: purchases}},
+        {new: true},
+    ).then(purchases => {
+        if(!purchases) {
+            return res.status(404).json({
+                error: "order not pushed to user purchase list"
+            });
+        }
+        next();
+    })
+    .catch(err => {
+        return res.status(500).json({
+            error: 'Error in processing rrquest'
+        })
+    })   
 };
