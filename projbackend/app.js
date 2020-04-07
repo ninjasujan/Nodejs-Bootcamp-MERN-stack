@@ -10,6 +10,7 @@ const cors = require('cors');
 
 // importing routes
 const authRoutes = require('./routes/auth');
+const userRoutes = require('./routes/user');
 
 // middleware
 app.use(bodyParser.json());
@@ -18,6 +19,7 @@ app.use(cors());
 
 // handlig routes
 app.use('/api', authRoutes);
+app.use('/api', userRoutes);
 
 // database connection and server setup
 mongoose.connect(process.env.DATABASE, {
