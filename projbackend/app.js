@@ -11,6 +11,7 @@ const cors = require('cors');
 // importing routes
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/user');
+const categoryRoutes = require('./routes/category');
 
 // middleware
 app.use(bodyParser.json());
@@ -20,6 +21,7 @@ app.use(cors());
 // handlig routes
 app.use('/api', authRoutes);
 app.use('/api', userRoutes);
+app.use('/api', categoryRoutes);
 
 // database connection and server setup
 mongoose.connect(process.env.DATABASE, {
