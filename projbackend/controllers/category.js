@@ -13,15 +13,18 @@ exports.getCategoryById = (req, res, next, id) => {
 };
 
 exports.createCategory = (req, res, next) => {
+  console.log(req.body);
   const category = new Category(req.body);
-  category.save().exec((err, data) => {
-    if (err) {
+  category
+    .save()
+    .then((category) => {
+      return res.status(201).json(category);
+    })
+    .catch((err) => {
       return res.status(400).json({
-        error: 'error in creatng category',
+        error: err,
       });
-    }
-    res.status(200).json({ data });
-  });
+    });
 };
 
 exports.getCategory = (req, res) => {
@@ -42,12 +45,26 @@ exports.getAllCategory = () => {
 exports.updateCategory = (req, res, next) => {
   const category = req.category;
   category.name = req.body.name;
-  category.save().exec((err, updatecategory) => {
+  category.save((err, updatecategory) => {
     if (err) {
       return res.status(400).json({
         error: 'unable to update category.!',
       });
     }
     res.status(200).json(updatecategory);
+  });
+};
+
+exports.deleteCategory = (req, res, next) => {
+  const category = req.category;
+  category.remove((err, data) => {
+    if (err) {
+      return res.status(400).json({
+        error: "can't delete category",
+      });
+    }
+    res.status(200).json({
+      message: 'successfull deletion of category',
+    });
   });
 };
