@@ -1,4 +1,3 @@
-
 // requiring core module and npm module
 require('dotenv').config();
 const express = require('express');
@@ -12,6 +11,7 @@ const cors = require('cors');
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/user');
 const categoryRoutes = require('./routes/category');
+const productRoutes = require('./routes/product');
 
 // middleware
 app.use(bodyParser.json());
@@ -22,26 +22,22 @@ app.use(cors());
 app.use('/api', authRoutes);
 app.use('/api', userRoutes);
 app.use('/api', categoryRoutes);
+app.use('/api', productRoutes);
 
 // database connection and server setup
-mongoose.connect(process.env.DATABASE, {
+mongoose
+  .connect(process.env.DATABASE, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    useCreateIndex: true
-})
-.then(() => {
+    useCreateIndex: true,
+  })
+  .then(() => {
     console.log('DB_CONNECTED.!');
     const port = process.env.PORT || 8000;
     app.listen(port, () => {
-        console.log(`server running on port ${port}...`);
+      console.log(`server running on port ${port}...`);
     });
-})
-.catch(err => {
+  })
+  .catch((err) => {
     console.log(err);
-});
-
-
-
-
-
-
+  });
