@@ -1,8 +1,8 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 
-const { isSignedIn, isAuthenticated, isAdmin } = require('../controllers/auth');
-const { getUserById } = require('../controllers/user');
+const { isSignedIn, isAuthenticated, isAdmin } = require("../controllers/auth");
+const { getUserById } = require("../controllers/user");
 const {
   getProductById,
   createProduct,
@@ -12,16 +12,16 @@ const {
   updateProduct,
   getAllProducts,
   getAllUniqueCategories,
-} = require('../controllers/product');
+} = require("../controllers/product");
 
 // read routes
 
-router.param('userId', getUserById);
-router.param('productId', getProductById);
+router.param("userId", getUserById);
+router.param("productId", getProductById);
 
 //create routes
 router.post(
-  '/product/create/:userId',
+  "/product/create/:userId",
   isSignedIn,
   isAuthenticated,
   isAdmin,
@@ -29,12 +29,12 @@ router.post(
 );
 
 // get product
-router.get('/product/:productId', getProduct);
-router.get('/product/photo/:productId', photo);
+router.get("/product/:productId", getProduct);
+router.get("/product/photo/:productId", photo);
 
 // delete route, isAdmin, deleteProduct
 router.delete(
-  '/product/:productId:/userId',
+  "/product/:productId/:userId",
   isSignedIn,
   isAuthenticated,
   isAdmin,
@@ -43,15 +43,15 @@ router.delete(
 
 //update routes
 router.put(
-  '/product/:productId:/userId',
+  "/product/:productId/:userId",
   isSignedIn,
   isAuthenticated,
   isAdmin,
   updateProduct
 );
 
-router.get('/products', getAllProducts);
+router.get("/products", getAllProducts);
 
-router.get('/products/categories', getAllUniqueCategories);
+router.get("/products/categories", getAllUniqueCategories);
 
 module.exports = router;
